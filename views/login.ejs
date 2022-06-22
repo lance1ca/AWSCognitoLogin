@@ -1,2 +1,13 @@
-<p>login</p>
-<p><a href="https://lance1cademotest.auth.ca-central-1.amazoncognito.com/logout?client_id=64a7hratgrhnb80md53899kbst&logout_uri=http://localhost:3000/">Log out</a></p>
+<link rel ="stylesheet" href="/login/login.css" type="text/css"> 
+<h1>LOGIN</h1>
+
+
+<form action="/users/login" method="POST">
+    <input type="email" id="email" name="email" placeholder = "Email">
+    <br>
+    <input type="password" id="password" name="password" placeholder = "Password">
+    <br>
+    <input type="submit" value="Login">
+    <br>
+    <a href="/users/register">Sign up</a>
+</form>
