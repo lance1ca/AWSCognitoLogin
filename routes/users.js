@@ -43,9 +43,25 @@ const urlEncodedParser = bodyParser.urlencoded({extended: false})
 
 //routers allow us to nest itself inside a parent route like users
 //so each router.get will automatically have /users/_______
-router.get('/login', (req,res)=>{
+router.get('/login',(req,res)=>{
     
     res.render("login")
+})
+
+router.post('/login',urlEncodedParser,async(req,res)=>{
+    let email = req.body.email;
+    let password = req.body.password;
+    let password_confirm = req.body.password_confirm;
+
+    const loginCheck = await AWS_Cognito.Login(email, password)
+    console.log("TEST:"+loginCheck)
+    if(loginCheck){
+        res.redirect('/users/dashboard')
+        console.log('RETURNED: ' + loginCheck)
+    }else{
+        res.redirect('/users/login')
+        console.log('RETURNED: ' + loginCheck)
+    }
 })
 
 router.get('/register', (req,res)=>{

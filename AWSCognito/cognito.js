@@ -43,4 +43,49 @@ const poolData = {
         return user;
     }
 
-    module.exports = {RegisterUser}
+
+    //Login function
+    async function Login (email, password) {
+        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+            Username : email,
+            Password : password,
+        });
+    
+        var userData = {
+            Username : email,
+            Pool : userPool
+        };
+        console.log('LOGIN GETS HERE')
+        var cognitoUser = await new AmazonCognitoIdentity.CognitoUser(userData);
+        console.log('ERROR HAS NOT OCCURRED')
+        //here
+        let test2;
+        let test = await cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: await function (result) {
+                console.log('LOGIN GETS HEREEEEEEE')
+                console.log('access token + ' + result.getAccessToken().getJwtToken());
+                console.log('id token + ' + result.getIdToken().getJwtToken());
+                console.log('refresh token + ' + result.getRefreshToken().getToken());
+                console.log('LOGIN GETS HERE?!?!?!?')
+                test2 = true;
+                console.log(test2)
+                return true;
+            },
+            onFailure: await function(err) {
+                console.log(err);
+                test2 = false;
+                console.log(test2)
+                return false;
+            },
+    
+        });
+        //why
+        console.log("test variable:"+test)
+        return test;
+    }
+
+
+
+
+
+    module.exports = {RegisterUser, Login}
