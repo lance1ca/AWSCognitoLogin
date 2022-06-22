@@ -1,0 +1,37 @@
+{
+  "name": "awscognitologin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lance1ca/AWSCognitoLogin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lance1ca/AWSCognitoLogin/issues"
+  },
+  "homepage": "https://github.com/lance1ca/AWSCognitoLogin#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "bcrypt": "^5.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-ejs-layouts": "^2.5.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
+    "passport": "^0.6.0",
+    "pg": "^8.7.3",
+    "uuid": "^8.3.2",
+    "zxcvbn": "^4.4.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
