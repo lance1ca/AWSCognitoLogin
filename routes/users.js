@@ -24,17 +24,18 @@ const router = express.Router();
 const flash = require('connect-flash')
 const expressFlash = require('express-flash')
 const session = require('express-session')
-
+const bodyParser = require('body-parser')
 const zxcvbn = require('zxcvbn')
 
 //requiring axios to do http requests and calls
 const axios = require('axios');
-
+const AWS_Cognito = require('../AWSCognito/cognito');
+const urlEncodedParser = bodyParser.urlencoded({extended: false})
 
 //passport stuff
 
 
-router.use(express.urlencoded({extended:false}))
+//router.use(express.urlencoded({extended:false}))
 
 
 
@@ -49,6 +50,21 @@ router.get('/login', (req,res)=>{
 
 router.get('/register', (req,res)=>{
     res.render("register")
+})
+
+router.post('/register',urlEncodedParser, async (req,res)=>{
+    console.log(req.body)
+    let name = req.body.name;
+    let gender = req.body.gender;
+    let email = req.body.email;
+    let phone = req.body.phone;
+    let password = req.body.password;
+    let password_confirm = req.body.password_confirm;
+    console.log(name,gender,email,phone,password,password_confirm)
+
+    const registered_user = await AWS_Cognito.RegisterUser(name,gender,email,phone,password,password_confirm)
+    console.log(registered_user)
+    res.redirect('/users/login')
 })
 
 router.get('/dashboard', (req,res)=>{
