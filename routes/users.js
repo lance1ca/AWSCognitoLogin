@@ -53,15 +53,14 @@ router.post('/login',urlEncodedParser,async(req,res)=>{
     let password = req.body.password;
     let password_confirm = req.body.password_confirm;
 
-    const loginCheck = await AWS_Cognito.Login(email, password)
-    console.log("TEST:"+loginCheck)
-    if(loginCheck){
+   let validateUser = await AWS_Cognito.Login(email, password)
+  console.log(validateUser)
+   if(validateUser){
         res.redirect('/users/dashboard')
-        console.log('RETURNED: ' + loginCheck)
-    }else{
-        res.redirect('/users/login')
-        console.log('RETURNED: ' + loginCheck)
-    }
+   }else{
+    res.redirect('/users/login')
+   }
+     
 })
 
 router.get('/register', (req,res)=>{

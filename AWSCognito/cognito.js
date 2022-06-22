@@ -5,7 +5,7 @@ const request = require('request');
 const jwkToPem = require('jwk-to-pem');
 const jwt = require('jsonwebtoken');
 require("dotenv").config()
-
+let validateUser;
 
 const poolData = {    
     UserPoolId : process.env.AWS_COGNITO_USER_POOL_ID, // Your user pool id here    
@@ -45,7 +45,7 @@ const poolData = {
 
 
     //Login function
-    async function Login (email, password) {
+    function Login (email, password) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
             Username : email,
             Password : password,
@@ -55,36 +55,45 @@ const poolData = {
             Username : email,
             Pool : userPool
         };
-        console.log('LOGIN GETS HERE')
-        var cognitoUser = await new AmazonCognitoIdentity.CognitoUser(userData);
-        console.log('ERROR HAS NOT OCCURRED')
-        //here
-        let test2;
-        let test = await cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: await function (result) {
-                console.log('LOGIN GETS HEREEEEEEE')
+        
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+        
+      
+       
+        
+        cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: function (result) {
+                //console.log(result)
                 console.log('access token + ' + result.getAccessToken().getJwtToken());
                 console.log('id token + ' + result.getIdToken().getJwtToken());
                 console.log('refresh token + ' + result.getRefreshToken().getToken());
-                console.log('LOGIN GETS HERE?!?!?!?')
-                test2 = true;
-                console.log(test2)
-                return true;
+                
+           validateUser = true;
+           console.log("made it"+validateUser)
+           return validateUser;
+               
             },
-            onFailure: await function(err) {
-                console.log(err);
-                test2 = false;
-                console.log(test2)
-                return false;
+            onFailure: function(err) {
+                console.log("ERROR:"+err);
+                
+                validateUser = false;
+                console.log("error"+validateUser)
+                return validateUser;
+                
             },
     
         });
-        //why
-        console.log("test variable:"+test)
-        return test;
+      
+        console.log("it came here first" +validateUser)
+       return validateUser;
     }
 
 
+    // user email validation
+
+    //user logout
+
+    //user forget password or change info
 
 
 
