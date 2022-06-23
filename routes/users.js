@@ -31,7 +31,7 @@ const zxcvbn = require('zxcvbn')
 const axios = require('axios');
 const AWS_Cognito = require('../AWSCognito/cognito');
 const urlEncodedParser = bodyParser.urlencoded({extended: false})
-
+const url = require('url')
 //passport stuff
 
 
@@ -75,7 +75,13 @@ router.post('/register',urlEncodedParser, async (req,res)=>{
 
     const registered_user = await AWS_Cognito.RegisterUser(name,gender,email,phone,password,password_confirm)
     console.log(registered_user)
-    res.redirect('/users/verify')
+    res.redirect(url.format({
+        pathname: '/users/verify',
+        query: {
+            "email":email
+        }
+    }))
+    
 })
 
 router.get('/verify',urlEncodedParser, (req,res)=>{
@@ -85,7 +91,7 @@ router.get('/verify',urlEncodedParser, (req,res)=>{
 router.post('/verify',urlEncodedParser, (req,res)=>{
     let email = req.body.email;
     let code = req.body.verify_code;
-    console.log(email+code)
+    console.log("verify"+req.body)
     AWS_Cognito.verifyMe(email,code,res);
 })
 
