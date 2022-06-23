@@ -86,7 +86,7 @@ router.post('/verify',urlEncodedParser, (req,res)=>{
     let email = req.body.email;
     let code = req.body.verify_code;
     console.log(email+code)
-    AWS_Cognito.verifyMe(email,code);
+    AWS_Cognito.verifyMe(email,code,res);
 })
 
 

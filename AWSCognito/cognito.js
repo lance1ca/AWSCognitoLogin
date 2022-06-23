@@ -46,7 +46,7 @@ const poolData = {
 
     //verify email / user function
 
-    function verifyMe(email, code){
+    function verifyMe(email, code,res){
         var userData = {
             Username: email,
             Pool: userPool,
@@ -56,15 +56,17 @@ const poolData = {
         cognitoUser.confirmRegistration(code, true, function(err, result) {
             if (err) {
                 alert(err.message || JSON.stringify(err));
-                return;
+                res.redirect('/users/verify')
+               
             }
             console.log('call result: ' + result);
+            res.redirect('/users/login')
         });
     }
 
 
     //Login function
-    async function Login (email, password,res) {
+   function Login (email, password,res) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
             Username : email,
             Password : password,
@@ -87,16 +89,14 @@ const poolData = {
                 console.log('id token + ' + result.getIdToken().getJwtToken());
                 console.log('refresh token + ' + result.getRefreshToken().getToken());
                 
-           validateUser = true;
-           console.log("made it"+true)
+      
            res.redirect('/users/dashboard')
                
             },
             onFailure: function(err) {
                 console.log("ERROR:"+err);
                 
-                validateUser = false;
-                console.log("error"+false)
+                
                 res.redirect('/users/login')
                 
             },
