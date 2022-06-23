@@ -45,6 +45,14 @@ const poolData = {
         return user;
     }
 
+
+
+    //resend verification code via email
+
+    function resendVerifyMe(){
+
+    }
+
     //verify email / user function
 
     function verifyMe(email, code,res){
@@ -56,25 +64,14 @@ const poolData = {
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
         cognitoUser.confirmRegistration(code, true, function(err, result) {
             if (err) {
-                alert(err.message || JSON.stringify(err));
-
-
-                cognitoUser.resendConfirmationCode(function(err, result) {
-                    if (err) {
-                        console.log(err.message || JSON.stringify(err));
-                        return;
-                    }
-                    console.log('call result: ' + result);
-                });
-                //res.redirect('/users/verify?email='+email)
-
-                
-               
+                console.log(err.message || JSON.stringify(err));
             }
             console.log('call result: ' + result);
             res.redirect('/users/login')
         });
     }
+
+
 
 
     //Login function
@@ -145,4 +142,4 @@ const poolData = {
 
 
 
-    module.exports = {RegisterUser, Login,verifyMe,signOut}
+    module.exports = {RegisterUser, Login,verifyMe,signOut,resendVerifyMe}
