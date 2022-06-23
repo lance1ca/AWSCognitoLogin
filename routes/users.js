@@ -91,12 +91,17 @@ router.post('/verify',urlEncodedParser, (req,res)=>{
 
 
 router.get('/dashboard', (req,res)=>{
-  
+  console.log("REQ BODY:"+req.body)
     res.render("dashboard")
 })
 
 router.get('/logout', (req,res)=>{
    res.render('logout')
+})
+
+router.post('/logout',urlEncodedParser,(req,res)=>{
+    let email = req.body.email;
+    AWS_Cognito.signOut(email,res)
 })
 
 

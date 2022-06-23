@@ -6,7 +6,7 @@ const jwkToPem = require('jwk-to-pem');
 const jwt = require('jsonwebtoken');
 require("dotenv").config()
 const alert = require('alert')
-let validateUser;
+
 
 const poolData = {    
     UserPoolId : process.env.AWS_COGNITO_USER_POOL_ID, // Your user pool id here    
@@ -107,13 +107,30 @@ const poolData = {
       
     }
 
-
-    // user email validation
-
     //user logout
 
-    //user forget password or change info
+    function signOut(email,res){
+        var userData = {
+            Username : email,
+            Pool : userPool
+        };
+        
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+        cognitoUser.signOut();
+        res.redirect('/users/login')
+
+    }
+
+
+    //user forget password
+
+    
+
+
+    //user change info
+
+    
 
 
 
-    module.exports = {RegisterUser, Login,verifyMe}
+    module.exports = {RegisterUser, Login,verifyMe,signOut}
