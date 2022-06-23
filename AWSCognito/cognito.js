@@ -87,7 +87,6 @@ const poolData = {
         };
         
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-        //here
       
        
         
@@ -99,7 +98,12 @@ const poolData = {
                 console.log('refresh token + ' + result.getRefreshToken().getToken());
                 
       
-           res.redirect('/users/dashboard')
+           res.redirect(url.format({
+            pathname: '/users/dashboard',
+            query: {
+                "email":email
+            }
+        }))
                
             },
             onFailure: function(err) {
@@ -118,15 +122,16 @@ const poolData = {
 
     //user logout
 
-    function signOut(email,res){
+    function signOut(email){
         var userData = {
-            Username : email,
+            Username : 'lance.rogan167@gmail.com',
             Pool : userPool
         };
         
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
         cognitoUser.signOut();
-        res.redirect('/users/login')
+        console.log("signed out")
+        
 
     }
 

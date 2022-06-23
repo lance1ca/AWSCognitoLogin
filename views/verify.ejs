@@ -5,11 +5,8 @@
 
 
 <form  onsubmit = "verifyEmail(event)" id = "verify_email" action="/users/verify" method="POST">
-    <div>
-        <label for=“confirmation_code”>Confirmation Code</label>
-        <input type=“string” id=verify_code name=verify_code required>
-    </div>
-    <!-- <input type="text" id="verify_code" name="verify_code" placeholder = "Verification Code" required> -->
+   
+    <input type="string" id="verify_code" name="verify_code" placeholder = "Verification Code" required>
     
     <button type="submit" >Verify</button>
     

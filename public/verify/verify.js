@@ -15,7 +15,7 @@ function verifyEmail(e){
     user_data.setAttribute('type', 'hidden')
 
     console.log(email)
-    let x = document.getElementById('verify_email')
-    x.appendChild(user_data)
-    x.submit()
+    let form = document.getElementById('verify_email')
+    form.appendChild(user_data)
+    form.submit()
 }
