@@ -48,23 +48,14 @@ router.get('/login',(req,res)=>{
     res.render("login")
 })
 
-router.post('/login',urlEncodedParser,async(req,res)=>{
+router.post('/login',urlEncodedParser,(req,res)=>{
     let email = req.body.email;
     let password = req.body.password;
     let password_confirm = req.body.password_confirm;
 
-//    let validateUser = AWS_Cognito.Login(email, password)
-//   console.log("USER FILE:"+validateUser) 
-  await AWS_Cognito.Login(email,password).then(
-    function(value){
-        console.log(value)
-    }
-  )
-//    if(validateUser){
-//         res.redirect('/users/dashboard')
-//    }else{
-//     res.redirect('/users/login')
-//    }
+
+  AWS_Cognito.Login(email,password,res)
+ 
      
 })
 

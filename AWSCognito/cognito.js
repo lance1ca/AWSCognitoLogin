@@ -64,7 +64,7 @@ const poolData = {
 
 
     //Login function
-    async function Login (email, password) {
+    async function Login (email, password,res) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
             Username : email,
             Password : password,
@@ -89,7 +89,7 @@ const poolData = {
                 
            validateUser = true;
            console.log("made it"+true)
-           return true;
+           res.redirect('/users/dashboard')
                
             },
             onFailure: function(err) {
@@ -97,7 +97,7 @@ const poolData = {
                 
                 validateUser = false;
                 console.log("error"+false)
-                return false;
+                res.redirect('/users/login')
                 
             },
     
