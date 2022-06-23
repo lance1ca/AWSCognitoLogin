@@ -96,23 +96,43 @@ router.post('/verify',urlEncodedParser, (req,res)=>{
 
 
 router.get('/dashboard',urlEncodedParser, (req,res)=>{
+    console.log("GET")
   console.log(req.query.email)
     res.render("dashboard")
 })
 
+router.post('/dashboard',urlEncodedParser, (req,res)=>{
+    console.log("POST")
+  console.log(req.body.email)
+  
+  AWS_Cognito.signOut(req.body.email,res)
+})
+
+// router.post('/dashboard',urlEncodedParser, (req,res)=>{
+//     console.log("POST")
+//     console.log(res)
+//     res.redirect(url.format({
+//         pathname: '/users/logout',
+//         query: {
+//             "email":email
+//         }
+//     }))
+//   })
+
 
 
 router.get('/logout',urlEncodedParser, (req,res)=>{
-    console.log(req)
-    AWS_Cognito.signOut()
+    // console.log(req)
+    // AWS_Cognito.signOut()
    res.render('logout')
 })
 
-// router.post('/logout',urlEncodedParser, (req,res)=>{
-//     AWS_Cognito.signOut()
-//     console.log(req)
+router.post('/logout',urlEncodedParser, (req,res)=>{
+    console.log(req.query.email)
+    AWS_Cognito.signOut(req.query.email)
+    // console.log(req)
 //    res.render('logout')
-// })
+})
 
 router.post('/logout',urlEncodedParser,(req,res)=>{
     let email = req.body.email;

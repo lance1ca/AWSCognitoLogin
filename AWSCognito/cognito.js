@@ -122,15 +122,16 @@ const poolData = {
 
     //user logout
 
-    function signOut(email){
+    function signOut(email,res){
         var userData = {
-            Username : 'lance.rogan167@gmail.com',
+            Username : email,
             Pool : userPool
         };
         
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
         cognitoUser.signOut();
         console.log("signed out")
+res.redirect('/users/logout')
         
 
     }
