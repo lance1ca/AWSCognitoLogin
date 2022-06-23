@@ -53,13 +53,18 @@ router.post('/login',urlEncodedParser,async(req,res)=>{
     let password = req.body.password;
     let password_confirm = req.body.password_confirm;
 
-   let validateUser = await AWS_Cognito.Login(email, password)
-  console.log(validateUser)
-   if(validateUser){
-        res.redirect('/users/dashboard')
-   }else{
-    res.redirect('/users/login')
-   }
+//    let validateUser = AWS_Cognito.Login(email, password)
+//   console.log("USER FILE:"+validateUser) 
+  await AWS_Cognito.Login(email,password).then(
+    function(value){
+        console.log(value)
+    }
+  )
+//    if(validateUser){
+//         res.redirect('/users/dashboard')
+//    }else{
+//     res.redirect('/users/login')
+//    }
      
 })
 
@@ -79,8 +84,20 @@ router.post('/register',urlEncodedParser, async (req,res)=>{
 
     const registered_user = await AWS_Cognito.RegisterUser(name,gender,email,phone,password,password_confirm)
     console.log(registered_user)
-    res.redirect('/users/login')
+    res.redirect('/users/verify')
 })
+
+router.get('/verify',urlEncodedParser, (req,res)=>{
+    res.render('verify')
+})
+
+router.post('/verify',urlEncodedParser, (req,res)=>{
+    let email = req.body.email;
+    let code = req.body.verify_code;
+    console.log(email+code)
+    AWS_Cognito.verifyMe(email,code);
+})
+
 
 router.get('/dashboard', (req,res)=>{
   

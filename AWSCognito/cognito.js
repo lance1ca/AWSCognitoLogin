@@ -5,6 +5,7 @@ const request = require('request');
 const jwkToPem = require('jwk-to-pem');
 const jwt = require('jsonwebtoken');
 require("dotenv").config()
+const alert = require('alert')
 let validateUser;
 
 const poolData = {    
@@ -43,9 +44,27 @@ const poolData = {
         return user;
     }
 
+    //verify email / user function
+
+    function verifyMe(email, code){
+        var userData = {
+            Username: email,
+            Pool: userPool,
+        };
+        
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+        cognitoUser.confirmRegistration(code, true, function(err, result) {
+            if (err) {
+                alert(err.message || JSON.stringify(err));
+                return;
+            }
+            console.log('call result: ' + result);
+        });
+    }
+
 
     //Login function
-    function Login (email, password) {
+    async function Login (email, password) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
             Username : email,
             Password : password,
@@ -57,11 +76,11 @@ const poolData = {
         };
         
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-        
+        //here
       
        
         
-        cognitoUser.authenticateUser(authenticationDetails, {
+     cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: function (result) {
                 //console.log(result)
                 console.log('access token + ' + result.getAccessToken().getJwtToken());
@@ -69,23 +88,23 @@ const poolData = {
                 console.log('refresh token + ' + result.getRefreshToken().getToken());
                 
            validateUser = true;
-           console.log("made it"+validateUser)
-           return validateUser;
+           console.log("made it"+true)
+           return true;
                
             },
             onFailure: function(err) {
                 console.log("ERROR:"+err);
                 
                 validateUser = false;
-                console.log("error"+validateUser)
-                return validateUser;
+                console.log("error"+false)
+                return false;
                 
             },
     
         });
       
-        console.log("it came here first" +validateUser)
-       return validateUser;
+        
+      
     }
 
 
@@ -97,4 +116,4 @@ const poolData = {
 
 
 
-    module.exports = {RegisterUser, Login}
+    module.exports = {RegisterUser, Login,verifyMe}
