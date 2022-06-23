@@ -6,6 +6,7 @@ const jwkToPem = require('jwk-to-pem');
 const jwt = require('jsonwebtoken');
 require("dotenv").config()
 const alert = require('alert')
+const url = require('url')
 
 
 const poolData = {    
@@ -56,7 +57,18 @@ const poolData = {
         cognitoUser.confirmRegistration(code, true, function(err, result) {
             if (err) {
                 alert(err.message || JSON.stringify(err));
-                res.redirect('/users/verify')
+
+
+                cognitoUser.resendConfirmationCode(function(err, result) {
+                    if (err) {
+                        console.log(err.message || JSON.stringify(err));
+                        return;
+                    }
+                    console.log('call result: ' + result);
+                });
+                //res.redirect('/users/verify?email='+email)
+
+                
                
             }
             console.log('call result: ' + result);
