@@ -49,13 +49,33 @@ const poolData = {
 
     //resend verification code via email
 
-    function resendVerifyMe(){
+    function resendVerifyMe(email,res){
+        var userData = {
+            Username: email,
+            Pool: userPool,
+        };
+        
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+
+        cognitoUser.resendConfirmationCode(function(err, result) {
+            if (err) {
+                console.log("resending code")
+                console.log(err.message || JSON.stringify(err));
+                //res.redirect('/users/verify')
+                //resendVerifyMe(email,res)
+            }else{
+            console.log('call result2: ' + result);
+            res.redirect('/users/login')
+            }
+        });
 
     }
 
     //verify email / user function
 
     function verifyMe(email, code,res){
+        res.redirect('/users/verify')
         var userData = {
             Username: email,
             Pool: userPool,
@@ -64,10 +84,14 @@ const poolData = {
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
         cognitoUser.confirmRegistration(code, true, function(err, result) {
             if (err) {
+                console.log("INVALID CODE")
                 console.log(err.message || JSON.stringify(err));
-            }
-            console.log('call result: ' + result);
+                //res.redirect('/users/verify')
+                resendVerifyMe(email,res)
+            }else{
+            console.log('call result1: ' + result);
             res.redirect('/users/login')
+            }
         });
     }
 
