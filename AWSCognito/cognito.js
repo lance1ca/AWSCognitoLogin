@@ -26,6 +26,7 @@ const poolData = {
     //This function takes in parameters for each input entered on the register page
     function RegisterUser(name,gender,email,phone,password){
 
+        return new Promise((resolve, reject)=>{
         //initialize attributelist
         var attributeList = [];
         //here we push each new cognito user attribute into the attribute list with the format ___ : ____ where it is name: ___ value: ___
@@ -40,7 +41,8 @@ const poolData = {
             if (err) {
                 //console.log(err);
                 console.log("ERROR MESSAGE:"+err.message)
-                
+                console.log('here first3')
+                reject(err.message)
             }else{
 
             //otherwise we indicate it was a success to the console and the page
@@ -50,10 +52,13 @@ const poolData = {
             user = result.user;
             console.log('User name is ' + cognitoUser.getUsername());
             console.log('User object is:\n'+cognitoUser.toString())
-            
+            console.log('here first2')
+            resolve("Account created successfully! A verification code was sent to your email, please verify below.");
             }
         });
-       
+        console.log('here first1')
+        reject("WHY DO U GO HERE FIRST :((((((((((((((((((((((")
+    })
     }
 
 
