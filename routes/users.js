@@ -1,5 +1,6 @@
 //Code by Lance
 
+let user_email="";
 
 //initialize variable first
 let notInProduction = false
@@ -55,7 +56,7 @@ router.use(flash())
 //so each router.get will automatically have /users/_______
 router.get('/login', (req, res) => {
 
-    res.render("login")
+    res.render("login",{message: req.flash('message') })
 })
 
 router.post('/login', urlEncodedParser, (req, res) => {
@@ -78,6 +79,7 @@ router.post('/register', urlEncodedParser, async (req, res) => {
     let name = req.body.name;
     let gender = req.body.gender;
     let email = req.body.email;
+    user_email = req.body.email;
     let phone = req.body.phone;
     let password = req.body.password;
     let password_confirm = req.body.password_confirm;
@@ -113,13 +115,26 @@ router.post('/register', urlEncodedParser, async (req, res) => {
 })
 
 router.get('/verify', urlEncodedParser, (req, res) => {
-    res.render('verify', { message: req.flash('message') })
+    res.render('verify', {message: req.flash('message') })
 })
 
-router.post('/verify', urlEncodedParser, (req, res) => {
-    let email = req.body.email;
+router.post('/verify', urlEncodedParser, async(req, res) => {
     let code = req.body.verify_code;
-    AWS_Cognito.verifyMe(email, code, res);
+
+    try {
+        let value = await AWS_Cognito.verifyMe(user_email, code);
+        console.log(value)
+        req.flash('message', value)
+        res.redirect('/users/login')
+        user_email = ""
+    } catch (error) {
+        console.log(error)
+        req.flash('message', error)
+        res.redirect('/users/verify')
+    }
+
+    
+    
 })
 
 

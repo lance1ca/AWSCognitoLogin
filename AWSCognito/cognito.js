@@ -87,25 +87,33 @@ const poolData = {
 //------------------------------------------------------------------------------------------------------------------------------
     //verify email / user function
 
-    function verifyMe(email, code,res){
-        res.redirect('/users/verify')
+    async function verifyMe(email, code){
+       
         var userData = {
             Username: email,
             Pool: userPool,
         };
         
+        
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+
+
+        return new Promise((resolve, reject) => {
+
         cognitoUser.confirmRegistration(code, true, function(err, result) {
             if (err) {
                 console.log("INVALID CODE")
-                console.log(err.message || JSON.stringify(err));
-                //res.redirect('/users/verify')
-                resendVerifyMe(email,res)
+                console.log(err.message);
+                reject(err.message)
+                
             }else{
-            console.log('call result1: ' + result);
-            res.redirect('/users/login')
+            
+                resolve("Verification process complete, you may now log in.");
             }
         });
+        
+    });
     }
 
 
