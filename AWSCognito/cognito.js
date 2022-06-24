@@ -120,7 +120,7 @@ const poolData = {
 
 //------------------------------------------------------------------------------------------------------------------------------
     //Login function
-   function Login (email, password,res) {
+   function Login (email, password) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
             Username : email,
             Password : password,
@@ -134,7 +134,7 @@ const poolData = {
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
       
        
-        
+        return new Promise((resolve, reject) => {
      cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: function (result) {
                 //console.log(result)
@@ -143,40 +143,37 @@ const poolData = {
                 console.log('refresh token + ' + result.getRefreshToken().getToken());
                 
       
-           res.redirect(url.format({
-            pathname: '/users/dashboard',
-            query: {
-                "email":email
-            }
-        }))
+           resolve("Successfully logged in")
                
             },
             onFailure: function(err) {
                 console.log("ERROR:"+err);
                 
                 
-                res.redirect('/users/login')
-                
+                resolve(err.message)
             },
     
         });
       
-        
+    });
       
     }
 //------------------------------------------------------------------------------------------------------------------------------
     //user logout
 
-    function signOut(email,res){
+    function signOut(email){
         var userData = {
             Username : email,
             Pool : userPool
         };
         
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+        return new Promise((resolve, reject) => {
         cognitoUser.signOut();
-        console.log("signed out")
-res.redirect('/users/logout')
+        resolve("Successfully Signed out.")
+
+});
         
 
     }

@@ -21,8 +21,8 @@ function verifyEmail(e){
 }
 
 
-function resendCode(event){
-    
+function resendCode(e){
+    e.preventDefault() // stops submit form to get submitted in order to do the checks first
 
     let resendElement = document.createElement('input')
     resendElement.setAttribute('name',"resend_code")

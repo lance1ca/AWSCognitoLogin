@@ -60,13 +60,25 @@ router.get('/login', (req, res) => {
     res.render("login",{message: req.flash('message') })
 })
 
-router.post('/login', urlEncodedParser, (req, res) => {
+router.post('/login', urlEncodedParser, async(req, res) => {
     let email = req.body.email;
+    user_email=req.body.email;
     let password = req.body.password;
-    let password_confirm = req.body.password_confirm;
+
+    try {
+        let value = await AWS_Cognito.Login(email, password)
+        console.log(value)
+        req.flash('message', value)
+        res.redirect('/users/dashboard')
+    } catch (error) {
+        console.log(error)
+        req.flash('message', error)
+        res.redirect('/users/login')
+    }
 
 
-    AWS_Cognito.Login(email, password, res)
+
+    
 
 
 })
@@ -144,7 +156,7 @@ router.post('/verify', urlEncodedParser, async(req, res) => {
         console.log(value)
         req.flash('message', value)
         res.redirect('/users/login')
-        user_email = ""
+        user_email=""
     } catch (error) {
         codeCounter = codeCounter+1;
         console.log(error)
@@ -180,28 +192,32 @@ router.post('/verify', urlEncodedParser, async(req, res) => {
 
 
 router.get('/dashboard', urlEncodedParser, (req, res) => {
-    console.log("GET")
-    console.log(req.query.email)
-    res.render("dashboard")
+    res.render("dashboard", {message: req.flash('message') })
 })
 
-router.post('/dashboard', urlEncodedParser, (req, res) => {
-    console.log("POST")
-    console.log(req.body.email)
+router.post('/dashboard', urlEncodedParser, async(req, res) => {
+   
 
-    AWS_Cognito.signOut(req.body.email, res)
+    let signOutStatus = req.body.signout_status
+    console.log(signOutStatus)
+    console.log(user_email)
+    if(signOutStatus){
+    try {
+        let value = await AWS_Cognito.signOut(user_email)
+        console.log(value)
+        user_email=""
+        console.log('user email set to:'+user_email)
+        req.flash('message', value)
+        res.redirect('/users/login')
+    } catch (error) {
+        console.log(error)
+        req.flash('message', error)
+        res.redirect('/users/dashboard')
+    }
+}
+
+    
 })
-
-// router.post('/dashboard',urlEncodedParser, (req,res)=>{
-//     console.log("POST")
-//     console.log(res)
-//     res.redirect(url.format({
-//         pathname: '/users/logout',
-//         query: {
-//             "email":email
-//         }
-//     }))
-//   })
 
 
 
@@ -211,18 +227,8 @@ router.get('/logout', urlEncodedParser, (req, res) => {
     res.render('logout')
 })
 
-router.post('/logout', urlEncodedParser, (req, res) => {
-    console.log(req.query.email)
-    AWS_Cognito.signOut(req.query.email)
-    // console.log(req)
-    //    res.render('logout')
-})
 
-router.post('/logout', urlEncodedParser, (req, res) => {
-    let email = req.body.email;
-    console.log(email)
-    AWS_Cognito.signOut(email, res)
-})
+
 
 
 
