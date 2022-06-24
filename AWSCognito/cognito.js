@@ -35,7 +35,7 @@ const poolData = {
         attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"email",Value:email}));
         attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"phone_number",Value:phone}));
 
-        let promise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
         //here we sign the user up into the pull and we pass in the email (username), password, and the attribute list initialized above
         userPool.signUp(email, password, attributeList, null, function(err, result){
             //if there is an error, we send the error message to the console and back to the page for the user to see
@@ -64,8 +64,8 @@ const poolData = {
         
             
         });
-        let result = await promise;
-        console.log(result)
+        // let result = await promise;
+        // console.log(result)
         
         // reject("WHY DO U GO HERE FIRST :((((((((((((((((((((((")
     // })

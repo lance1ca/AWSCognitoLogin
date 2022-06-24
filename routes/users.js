@@ -73,7 +73,7 @@ router.get('/register', (req,res)=>{
     res.render("register", {message:req.flash('message')})
 })
 
-router.post('/register',urlEncodedParser, (req,res)=>{
+router.post('/register',urlEncodedParser, async (req,res)=>{
     console.log(req.body)
     let name = req.body.name;
     let gender = req.body.gender;
@@ -83,13 +83,20 @@ router.post('/register',urlEncodedParser, (req,res)=>{
     let password_confirm = req.body.password_confirm;
     console.log(name,gender,email,phone,password,password_confirm)
 
+    // try{
+    // let y = await AWS_Cognito.RegisterUser(name,gender,email,phone,password)
+    // console.log(y)
+    // }catch(error){
+    //     console.log(error)
+    // }
     AWS_Cognito.RegisterUser(name,gender,email,phone,password).then(
         function(value){
+            console.log(value)
             req.flash('message',value)
             res.redirect('/users/verify')
         }).catch(
         function(error){
-           
+           console.log(error)
             req.flash('message',error)
             res.redirect('/users/register')
         }
