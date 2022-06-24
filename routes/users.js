@@ -32,11 +32,21 @@ const axios = require('axios');
 const AWS_Cognito = require('../AWSCognito/cognito');
 const urlEncodedParser = bodyParser.urlencoded({extended: false})
 const url = require('url')
+
+
+const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
+const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
+const AWS = require('aws-sdk');
 //passport stuff
 
 
 //router.use(express.urlencoded({extended:false}))
-
+router.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false, //Should we resave our session variables if nothing has changed
+    saveUninitialized : false //Do you want to save an empty value in session if there is no value
+}))
+router.use(flash())
 
 
 
@@ -60,7 +70,7 @@ router.post('/login',urlEncodedParser,(req,res)=>{
 })
 
 router.get('/register', (req,res)=>{
-    res.render("register")
+    res.render("register", {message:req.flash('message')})
 })
 
 router.post('/register',urlEncodedParser, async (req,res)=>{
@@ -73,19 +83,60 @@ router.post('/register',urlEncodedParser, async (req,res)=>{
     let password_confirm = req.body.password_confirm;
     console.log(name,gender,email,phone,password,password_confirm)
 
-    const registered_user = await AWS_Cognito.RegisterUser(name,gender,email,phone,password,password_confirm)
-    console.log(registered_user)
-    res.redirect(url.format({
-        pathname: '/users/verify',
-        query: {
-            "email":email
-        }
-    }))
+    //AWS_Cognito.RegisterUser(name,gender,email,phone,password,password_confirm,res,req)
+
+    // console.log(message)
+    // req.flash('message','error test')
+    // res.redirect('/users/register')
+
+    const poolData = {    
+        UserPoolId : process.env.AWS_COGNITO_USER_POOL_ID, // Your user pool id here    
+        ClientId : process.env.AWS_COGNITO_CLIENT_ID// Your client id here
+        }; 
+    
+        //setting pool region
+        const pool_region = process.env.AWS_COGNITO_POOL_REGION;
+    
+        //initiating user pool and connecting
+        const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        //initialize attributelist
+        var attributeList = [];
+        //here we push each new cognito user attribute into the attribute list with the format ___ : ____ where it is name: ___ value: ___
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"gender",Value:gender}));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"email",Value:email}));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"phone_number",Value:phone}));
+
+        //here we sign the user up into the pull and we pass in the email (username), password, and the attribute list initialized above
+        userPool.signUp(email, password, attributeList, null, function(err, result){
+            //if there is an error, we send the error message to the console and back to the page for the user to see
+            if (err) {
+                //console.log(err);
+                console.log("ERROR MESSAGE:"+err.message)
+                req.flash('message',err.message)
+                res.redirect('/users/register')
+            }else{
+
+            //otherwise we indicate it was a success to the console and the page
+            // and we set user and cognito user to be the result.user object
+            console.log('Register was a success!')
+            cognitoUser = result.user;
+            user = result.user;
+            console.log('User name is ' + cognitoUser.getUsername());
+            req.flash('message',"Account created successfully! A verification code was sent to your email, please verify below.")
+            res.redirect('/users/verify')
+            }
+        });
+       
+    
+
+    
     
 })
 
 router.get('/verify',urlEncodedParser, (req,res)=>{
-    res.render('verify')
+    res.render('verify',{message:req.flash('message')})
 })
 
 router.post('/verify',urlEncodedParser, (req,res)=>{
