@@ -70,18 +70,19 @@ const poolData = {
         
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
-
+        return new Promise((resolve, reject) => {
         cognitoUser.resendConfirmationCode(function(err, result) {
             if (err) {
-                console.log("resending code")
-                console.log(err.message || JSON.stringify(err));
-                //res.redirect('/users/verify')
-                //resendVerifyMe(email,res)
+                
+                console.log("There was an error resending the code:\n");
+              
+                reject(err.message)
             }else{
-            console.log('call result2: ' + result);
-            res.redirect('/users/login')
+            
+            resolve("Resent verification code, try again.");
             }
         });
+    });
 
     }
 //------------------------------------------------------------------------------------------------------------------------------
@@ -104,7 +105,6 @@ const poolData = {
         cognitoUser.confirmRegistration(code, true, function(err, result) {
             if (err) {
                 console.log("INVALID CODE")
-                console.log(err.message);
                 reject(err.message)
                 
             }else{

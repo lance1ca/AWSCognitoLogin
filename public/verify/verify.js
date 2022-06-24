@@ -1,4 +1,4 @@
-
+const AWS_Cognito = require('../../AWSCognito/cognito');
 
 function verifyEmail(e){
      console.log('hi')
@@ -18,4 +18,19 @@ function verifyEmail(e){
     let form = document.getElementById('verify_email')
     form.appendChild(user_data)
     form.submit()
+}
+
+
+function resendCode(event){
+    
+
+    let resendElement = document.createElement('input')
+    resendElement.setAttribute('name',"resend_code")
+    resendElement.setAttribute('value',true)
+    resendElement.setAttribute('type', 'hidden')
+
+    let form = document.getElementById('resend_code')
+    form.appendChild(resendElement)
+    form.submit()
+    
 }

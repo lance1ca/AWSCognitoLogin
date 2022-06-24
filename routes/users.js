@@ -120,6 +120,23 @@ router.get('/verify', urlEncodedParser, (req, res) => {
 
 router.post('/verify', urlEncodedParser, async(req, res) => {
     let code = req.body.verify_code;
+    let resendStatus = req.body.resend_code
+    if(resendStatus){
+        
+        try{
+        let resendingCode = await AWS_Cognito.resendVerifyMe(user_email,res)
+        console.log(resendingCode)
+        req.flash('message', resendingCode)
+        res.redirect('/users/verify')
+
+        }catch(error){
+            console.log(error)
+           
+            req.flash('message', error)
+            res.redirect('/users/verify')
+        }
+
+    }else{
 
     try {
         let value = await AWS_Cognito.verifyMe(user_email, code);
@@ -132,6 +149,7 @@ router.post('/verify', urlEncodedParser, async(req, res) => {
         req.flash('message', error)
         res.redirect('/users/verify')
     }
+}
 
     
     
