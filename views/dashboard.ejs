@@ -1,11 +1,10 @@
-
-<link rel ="stylesheet" href="/dashboard/dashboard.css" type="text/css"> 
+<link rel="stylesheet" href="/dashboard/dashboard.css" type="text/css">
 <script src="/dashboard/dashboard.js" type="text/javascript"></script>
 <h1>Dashboard</h1>
 <%=message%>
-<!-- <Button><a href="/users/logout">Logout</a></Button> -->
+    <!-- <Button><a href="/users/logout">Logout</a></Button> -->
 
-<form  onsubmit = "signOut(event)" id = "logout" action="/users/dashboard" method="POST">
-    <button type="submit">Logout</button>
-    <br>
-</form>
+    <form onsubmit="signOut(event)" id="logout" action="/users/dashboard" method="POST">
+        <button type="submit">Logout</button>
+        <br>
+    </form>

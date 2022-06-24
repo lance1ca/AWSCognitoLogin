@@ -1,7 +1,7 @@
 //Code by Lance
 
-let user_email="";
-let codeCounter =0;
+let user_email = "";
+let codeCounter = 0;
 
 //initialize variable first
 let notInProduction = false
@@ -57,12 +57,12 @@ router.use(flash())
 //so each router.get will automatically have /users/_______
 router.get('/login', (req, res) => {
 
-    res.render("login",{message: req.flash('message') })
+    res.render("login", { message: req.flash('message') })
 })
 
-router.post('/login', urlEncodedParser, async(req, res) => {
+router.post('/login', urlEncodedParser, async (req, res) => {
     let email = req.body.email;
-    user_email=req.body.email;
+    user_email = req.body.email;
     let password = req.body.password;
 
     try {
@@ -78,7 +78,7 @@ router.post('/login', urlEncodedParser, async(req, res) => {
 
 
 
-    
+
 
 
 })
@@ -128,95 +128,95 @@ router.post('/register', urlEncodedParser, async (req, res) => {
 })
 
 router.get('/verify', urlEncodedParser, (req, res) => {
-    res.render('verify', {message: req.flash('message') })
+    res.render('verify', { message: req.flash('message') })
 })
 
-router.post('/verify', urlEncodedParser, async(req, res) => {
+router.post('/verify', urlEncodedParser, async (req, res) => {
     let code = req.body.verify_code;
     let resendStatus = req.body.resend_code
-    if(resendStatus){
-        
-        try{
-        let resendingCode = await AWS_Cognito.resendVerifyMe(user_email,res)
-        console.log(resendingCode)
-        req.flash('message', resendingCode)
-        res.redirect('/users/verify')
+    if (resendStatus) {
 
-        }catch(error){
+        try {
+            let resendingCode = await AWS_Cognito.resendVerifyMe(user_email, res)
+            console.log(resendingCode)
+            req.flash('message', resendingCode)
+            res.redirect('/users/verify')
+
+        } catch (error) {
             console.log(error)
-           
+
             req.flash('message', error)
             res.redirect('/users/verify')
         }
 
-    }else{
+    } else {
 
-    try {
-        let value = await AWS_Cognito.verifyMe(user_email, code);
-        console.log(value)
-        req.flash('message', value)
-        res.redirect('/users/login')
-        user_email=""
-    } catch (error) {
-        codeCounter = codeCounter+1;
-        console.log(error)
-        console.log("Code attempts:"+codeCounter)
+        try {
+            let value = await AWS_Cognito.verifyMe(user_email, code);
+            console.log(value)
+            req.flash('message', value)
+            res.redirect('/users/login')
+            user_email = ""
+        } catch (error) {
+            codeCounter = codeCounter + 1;
+            console.log(error)
+            console.log("Code attempts:" + codeCounter)
 
-        if(codeCounter <5){
+            if (codeCounter < 5) {
 
-        req.flash('message', error)
-        res.redirect('/users/verify')
-        }else{
-
-            try{
-                let resendingCode = await AWS_Cognito.resendVerifyMe(user_email,res)
-                console.log(resendingCode)
-                codeCounter=0;
-                req.flash('message', "You reached the maximum of 5 failed attempts per verificaiton code. "+resendingCode)
+                req.flash('message', error)
                 res.redirect('/users/verify')
-        
-                }catch(error){
+            } else {
+
+                try {
+                    let resendingCode = await AWS_Cognito.resendVerifyMe(user_email, res)
+                    console.log(resendingCode)
+                    codeCounter = 0;
+                    req.flash('message', "You reached the maximum of 5 failed attempts per verificaiton code. " + resendingCode)
+                    res.redirect('/users/verify')
+
+                } catch (error) {
                     console.log(error)
-                   
+
                     req.flash('message', error)
                     res.redirect('/users/verify')
                 }
 
+            }
         }
     }
-}
 
-    
-    
+
+
 })
 
 
 router.get('/dashboard', urlEncodedParser, (req, res) => {
-    res.render("dashboard", {message: req.flash('message') })
+    res.render("dashboard", { message: req.flash('message') })
 })
 
-router.post('/dashboard', urlEncodedParser, async(req, res) => {
-   
+router.post('/dashboard', urlEncodedParser, async (req, res) => {
+
 
     let signOutStatus = req.body.signout_status
     console.log(signOutStatus)
     console.log(user_email)
-    if(signOutStatus){
-    try {
-        let value = await AWS_Cognito.signOut(user_email)
-        console.log(value)
-        user_email=""
-        console.log('user email set to:'+user_email)
-        req.flash('message', value)
-        res.redirect('/users/login')
-    } catch (error) {
-        console.log(error)
-        req.flash('message', error)
-        res.redirect('/users/dashboard')
+    if (signOutStatus) {
+        try {
+            let value = await AWS_Cognito.signOut(user_email)
+            console.log(value)
+            user_email = ""
+            console.log('user email set to:' + user_email)
+            req.flash('message', value)
+            res.redirect('/users/login')
+        } catch (error) {
+            console.log(error)
+            req.flash('message', error)
+            res.redirect('/users/dashboard')
+        }
     }
-}
 
-    
+
 })
 
 

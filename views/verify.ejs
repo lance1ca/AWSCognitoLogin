@@ -1,21 +1,20 @@
-
-<link rel ="stylesheet" href="/verify/verify.css" type="text/css"> 
+<link rel="stylesheet" href="/verify/verify.css" type="text/css">
 <script src="/verify/verify.js" type="text/javascript"></script>
 <h1>VERIFY</h1>
 <%=message%>
 
-<form  onsubmit = "verifyEmail(event)" id = "verify_email" action="/users/verify" method="POST">
-   
-    <input type="string" id="verify_code" name="verify_code" placeholder = "Verification Code" required>
-    
-    <button type="submit" >Verify</button>
-    
-</form>
-<br>
+    <form onsubmit="verifyEmail(event)" id="verify_email" action="/users/verify" method="POST">
+
+        <input type="string" id="verify_code" name="verify_code" placeholder="Verification Code" required>
+
+        <button type="submit">Verify</button>
+
+    </form>
+    <br>
 
 
-<form  onsubmit = "resendCode(event)" id = "resend_code" action="/users/verify" method="POST">
-    
-    <button type="submit" >Resend verification code</button>
-    
-</form>
+    <form onsubmit="resendCode(event)" id="resend_code" action="/users/verify" method="POST">
+
+        <button type="submit">Resend verification code</button>
+
+    </form>
