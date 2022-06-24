@@ -1,6 +1,7 @@
 //Code by Lance
 
 let user_email="";
+let codeCounter =0;
 
 //initialize variable first
 let notInProduction = false
@@ -145,9 +146,31 @@ router.post('/verify', urlEncodedParser, async(req, res) => {
         res.redirect('/users/login')
         user_email = ""
     } catch (error) {
+        codeCounter = codeCounter+1;
         console.log(error)
+        console.log("Code attempts:"+codeCounter)
+
+        if(codeCounter <5){
+
         req.flash('message', error)
         res.redirect('/users/verify')
+        }else{
+
+            try{
+                let resendingCode = await AWS_Cognito.resendVerifyMe(user_email,res)
+                console.log(resendingCode)
+                codeCounter=0;
+                req.flash('message', "You reached the maximum of 5 failed attempts per verificaiton code. "+resendingCode)
+                res.redirect('/users/verify')
+        
+                }catch(error){
+                    console.log(error)
+                   
+                    req.flash('message', error)
+                    res.redirect('/users/verify')
+                }
+
+        }
     }
 }
 
