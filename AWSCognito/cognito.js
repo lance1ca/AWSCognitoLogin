@@ -40,10 +40,7 @@ const poolData = {
         userPool.signUp(email, password, attributeList, null, function(err, result){
             //if there is an error, we send the error message to the console and back to the page for the user to see
             if (err) {
-                //console.log(err);
                 console.log("ERROR MESSAGE:"+err.message)
-                console.log('here first3')
-                let returnedMessage = err.message
                 reject(err.message)
             }else{
 
@@ -54,21 +51,11 @@ const poolData = {
             user = result.user;
             console.log('User name is ' + cognitoUser.getUsername());
             console.log('User object is:\n'+cognitoUser.toString())
-            console.log('here first2')
-            let returnedMessage = "YES"
             resolve("Account created successfully! A verification code was sent to your email, please verify below.");
             }
+        });  
         });
 
-
-        
-            
-        });
-        // let result = await promise;
-        // console.log(result)
-        
-        // reject("WHY DO U GO HERE FIRST :((((((((((((((((((((((")
-    // })
     }
 
 
