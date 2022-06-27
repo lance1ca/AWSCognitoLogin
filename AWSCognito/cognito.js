@@ -323,8 +323,31 @@ return new Promise((resolve, reject) => {
 
 
 //------------------------------------------------------------------------------------------------------------------------------
-//user change info
-//TODO
+//user reset password
+//user forget password
+
+function resetPassword(email,code,newPassword){
+
+    //Initializing the user data with a specific email and userPool (specific user)
+    var userData = {
+        Username: email,
+        Pool: userPool
+    };
+    
+    //Connecting to the user pool for a specific user
+    var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+    
+    return new Promise((resolve, reject) => {
+        cognitoUser.confirmPassword(code, newPassword, {
+			onSuccess() {
+				resolve('Password confirmed!');
+			},
+			onFailure(err) {
+				reject(err.message);
+			},
+		});
+    });
+    }
 
 //------------------------------------------------------------------------------------------------------------------------------
 //Facebook sign in
@@ -338,4 +361,4 @@ return new Promise((resolve, reject) => {
 
 
 //------------------------------------------------------------------------------------------------------------------------------
-module.exports = { RegisterUser, Login, verifyMe, signOut, resendVerifyMe,changePassword,forgetPassword }
+module.exports = { RegisterUser, Login, verifyMe, signOut, resendVerifyMe,changePassword,forgetPassword,resetPassword }
