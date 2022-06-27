@@ -292,8 +292,34 @@ function changePassword(email,password,newPassword){
 
 //------------------------------------------------------------------------------------------------------------------------------
 //user forget password
-//TODO
-//TESTING BRANCH INITIALIZE
+
+function forgetPassword(email){
+
+//Initializing the user data with a specific email and userPool (specific user)
+var userData = {
+    Username: email,
+    Pool: userPool
+};
+
+//Connecting to the user pool for a specific user
+var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+return new Promise((resolve, reject) => {
+    cognitoUser.forgotPassword({
+        onSuccess: function(data) {
+            // successfully initiated reset password request
+            console.log('CodeDeliveryData from forgotPassword: ' + data);
+            console.log("code sent to email??")
+            resolve("Reset password code was sent to your email.")
+        },
+        onFailure: function(err) {
+            reject(err.message)
+        }
+       
+    });
+});
+}
+
 
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -312,4 +338,4 @@ function changePassword(email,password,newPassword){
 
 
 //------------------------------------------------------------------------------------------------------------------------------
-module.exports = { RegisterUser, Login, verifyMe, signOut, resendVerifyMe,changePassword }
+module.exports = { RegisterUser, Login, verifyMe, signOut, resendVerifyMe,changePassword,forgetPassword }

@@ -306,12 +306,87 @@ router.post('/changePassword', urlEncodedParser, async (req, res) => {
         res.redirect('/users/changePassword')
     }
 
-
-
-
-
 })
 //------------------------------------------------------------------------------------------------------------------------------
+//FORGOT PASSWORD ROUTES BELOW:
+
+router.get('/forgotPassword', (req, res) => {
+    //render the register ejs file with the req.flash content of message
+    res.render("forgotPassword", { message: req.flash('message') })
+})
+
+
+//CHANGE PASSWORD POST ROUTE
+router.post('/forgotPassword', urlEncodedParser, async (req, res) => {
+    
+    let resetPasswordStatus = req.body.forgot_password_status
+    let email = req.body.email
+    user_email = req.body.email
+console.log(resetPasswordStatus+" "+email+" "+user_email)
+    if(resetPasswordStatus){
+
+        try {
+            //If the user is registered correctly, we log the value returned (aka resolved promise), and we
+            // flash this resolved value to message and we redirect the user to the verify page.
+            let value = await AWS_Cognito.forgetPassword(user_email)
+            console.log(value)
+            req.flash('message', value)
+            res.redirect('/users/resetPassword')
+        } catch (error) {
+            //Otherwise, we catch the error, flash the error to message, and redirect the user to the change password page.
+            console.log(error)
+            req.flash('message', error)
+            res.redirect('/users/changePassword')
+        }
+
+    }else{
+        req.flash('message', "Please enter your email and request a reset password code.")
+        res.redirect('/users/forgotPassword')
+    }
+
+  
+
+})
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+//RESET PASSWORD ROUTES BELOW:
+
+router.get('/resetPassword', (req, res) => {
+    //render the register ejs file with the req.flash content of message
+    res.render("resetPassword", { message: req.flash('message') })
+})
+
+
+
+
+//CHANGE PASSWORD POST ROUTE
+router.post('/changePassword', urlEncodedParser, async (req, res) => {
+    //Console logging the request body
+    console.log(req.body)
+    //Setting the variables to the different values sent in the request body
+  console.log("user email check:"+user_email)
+    let old_password = req.body.oldPassword
+    let new_password = req.body.newPassword
+    let confirm_new_password = req.body.confirmNewPassword
+    //Here we try to register the user with the above details into the AWS Cognito user pool
+    try {
+        //If the user is registered correctly, we log the value returned (aka resolved promise), and we
+        // flash this resolved value to message and we redirect the user to the verify page.
+        let value = await AWS_Cognito.changePassword(user_email, old_password,new_password)
+        console.log(value)
+        req.flash('message', value)
+        res.redirect('/users/dashboard')
+    } catch (error) {
+        //Otherwise, we catch the error, flash the error to message, and redirect the user to the register page.
+        console.log(error)
+        req.flash('message', error)
+        res.redirect('/users/changePassword')
+    }
+
+})
+
+
 
 //------------------------------------------------------------------------------------------------------------------------------
 //LOGOUT ROUTES BELOW:
