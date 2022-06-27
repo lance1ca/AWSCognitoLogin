@@ -230,6 +230,66 @@ function signOut(email) {
 
 }
 
+
+//------------------------------------------------------------------------------------------------------------------------------
+//user change password
+
+function changePassword(email,password,newPassword){
+    //Initializing authentication details with the email and password passed in
+    var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+        Username: email,
+        Password: password,
+    });
+
+    //Initializing the user data with a specific email and userPool (specific user)
+    var userData = {
+        Username: email,
+        Pool: userPool
+    };
+
+    //Connecting to the user pool for a specific user
+    var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+
+    //Here we return a new Promise with a resolve or reject statement and corresponding value.
+    //By returning a new promise, when this function is called it waits until the Promise / function has completed before proceeding and using its value.
+    //This prevents the function from returning undefined or an incorrect value before the function is actually finished when called.
+    return new Promise((resolve, reject) => {
+
+        cognitoUser.authenticateUser(authenticationDetails, {
+            //If there is a success and the user is authenticated and entered in the correct email and password,
+            //then we print out the 3 different access tokens, and resolve the promise with the success message.
+            onSuccess: function (result) {
+                //console.log(result)
+                cognitoUser.changePassword(password, newPassword, function(err, result) {
+            
+                    if (err) {
+                        console.log(err.message)
+                        reject("ERROR with password change")
+                    }else{
+                        resolve("PASSWORD CHANGED")
+                    }
+                   
+                });
+
+            },
+            //if there is an error, log the error and reject the promise with the error message
+            onFailure: function (err) {
+                console.log("ERROR Authenticating:" + err);
+                reject(err.message)
+            },
+
+        });
+
+
+
+     
+
+    });
+
+}
+
+
 //------------------------------------------------------------------------------------------------------------------------------
 //user forget password
 //TODO
@@ -252,4 +312,4 @@ function signOut(email) {
 
 
 //------------------------------------------------------------------------------------------------------------------------------
-module.exports = { RegisterUser, Login, verifyMe, signOut, resendVerifyMe }
+module.exports = { RegisterUser, Login, verifyMe, signOut, resendVerifyMe,changePassword }
