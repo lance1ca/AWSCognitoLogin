@@ -316,7 +316,7 @@ router.get('/forgotPassword', (req, res) => {
 })
 
 
-//CHANGE PASSWORD POST ROUTE
+//FORGOT PASSWORD POST ROUTE
 router.post('/forgotPassword', urlEncodedParser, async (req, res) => {
     
     let resetPasswordStatus = req.body.forgot_password_status
@@ -360,7 +360,7 @@ router.get('/resetPassword', (req, res) => {
 
 
 
-//CHANGE PASSWORD POST ROUTE
+//RESET PASSWORD POST ROUTE
 router.post('/resetPassword', urlEncodedParser, async (req, res) => {
     
     let code = req.body.password_code
