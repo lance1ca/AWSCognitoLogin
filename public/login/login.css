@@ -35,6 +35,16 @@ body{
 
 
 
+.error-message-container{
+    background-color: rgb(241, 84, 84);
+    opacity: 0.9;
+    width:25%;
+    height:25%;
+    overflow: auto;
+}
+
+
+
 
 
 /**************************************/
@@ -167,7 +177,7 @@ body{
 }
 
 .input-button:hover{
-    padding:16px 56px;
+    padding:16px 16px;
     border-radius: 26px;
     font-family: 'Dosis';
     font-weight: 300;
