@@ -11,13 +11,25 @@ body{
 
 /**************************************/
 
+
+.login-header{
+    color:rgb(41, 124, 137);
+    margin: 0;
+    font-family: 'Dosis';
+    font-weight: 600;
+    font-size: 26px;
+}
+
+/**************************************/
+
 .login-card{
+    display: flex;
+    justify-content: center;
     border: 1px solid white;
     text-align: center;
     border-radius: 26px;
-    width:85%;
-    margin-left: 5%;
-    margin-right: 5%;
+    width:100%;
+    
     height:415px;
     /* background-color: rgb(255, 255, 255); */
     vertical-align: middle;
@@ -26,8 +38,12 @@ body{
 
 /**************************************/
 .login-form-container{
-    display: inline-block;
-    vertical-align: middle;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    
+    text-align: center;
+    
     border:2px solid rgb(0, 165, 36);
     border-radius: 26px;
  background-color: rgb(181, 201, 219);
@@ -43,11 +59,14 @@ body{
 .input-link{
     text-decoration: none;
     color:rgb(102, 102, 102);
-
+    font-family: 'Dosis';
+    font-weight: 300;
 }
 
 .input-link:hover{
     color: rgb(0, 145, 255);
+    font-family: 'Dosis';
+    font-weight: 300;
 }
 
 
@@ -56,26 +75,50 @@ body{
 
 
 /**************************************/
+
+::placeholder{
+    color:grey;
+    font-family: 'Dosis';
+    font-weight: 300;
+}
+
+.input-box:focus::placeholder{
+    
+    color:rgb(82, 82, 82);
+    font-family: 'Dosis';
+    font-weight: 300;
+}
+
+.input-box:hover::placeholder{
+    
+    color:rgb(82, 82, 82);
+    font-family: 'Dosis';
+    font-weight: 300;
+}
+
 .input-box{
-    padding: 16px 16px;
-    margin: 10%;
+     padding: 16px 16px;
+    margin: 5%; 
     border-radius: 22px;
     border: 3px solid rgb(99, 99, 99);
     
+    
 }
+
+
 
 .input-box:focus{
     outline:none;
     border: 3px solid rgb(0, 191, 255);
     background-color: rgb(232, 250, 255);
-
+  
 }
 
 .input-box:hover{
     outline:none;
     border: 3px solid rgb(0, 191, 255);
     background-color: rgb(232, 250, 255);
-    
+   
 }
 
 
@@ -85,15 +128,20 @@ body{
     border-radius: 26px;
     border: 3px solid rgb(99, 99, 99);
     margin: 10%;
+    color:grey;
+    font-family: 'Dosis';
+    font-weight: 300;
 }
 
 .input-button:hover{
     padding:16px 56px;
     border-radius: 26px;
-    
+    font-family: 'Dosis';
+    font-weight: 300;
     outline:none;
     border: 3px solid rgb(0, 191, 255);
     background-color: rgb(232, 250, 255);
     cursor: pointer;
+    color: rgb(82, 82, 82);
 }
 

@@ -3,7 +3,9 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <meta name="google-signin-client_id" content="259768246515-hc00k75grtcfjviefdjv129o5aued1je.apps.googleusercontent.com">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;600&display=swap" rel="stylesheet">
 
 <%=message%>
 
@@ -11,6 +13,7 @@
   
 
 <div class = "login-form-container">
+    <h2 class="login-header">Login</h2>
     <form  action="/users/login" method="POST">
         <input class = "input-box" type="email" id="email" name="email" placeholder="Email">
         <br>
