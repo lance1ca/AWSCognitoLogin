@@ -1,15 +1,18 @@
 body{
-    background-image: url("../images/background.jpg");
+    background-image: url("../images/abstract.jpg");
    
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
    
 }
 
+/**************************************/
+
 .login-card{
-    /* border: 1px solid black; */
+    border: 1px solid white;
     text-align: center;
     border-radius: 26px;
     width:85%;
@@ -20,10 +23,12 @@ body{
     vertical-align: middle;
     
 }
+
+/**************************************/
 .login-form-container{
     display: inline-block;
     vertical-align: middle;
-    /* border:1px solid rgb(187, 30, 30); */
+    border:2px solid rgb(0, 165, 36);
     border-radius: 26px;
  background-color: rgb(181, 201, 219);
  opacity: 1;
@@ -33,42 +38,30 @@ body{
 
 }
 
+/**************************************/
+
 .input-link{
     text-decoration: none;
-    color:gray;
+    color:rgb(102, 102, 102);
 
 }
 
-.login-image-container{
-    display: inline-block;
-    vertical-align: middle;
-   /* border: 1px solid black; */
-   background-image: url("../images/730_generated.jpg");
-   height: 415px;
-   background-position: center;
-   background-repeat: no-repeat;
-   background-size: cover;
-   border-radius: 22px;
-   width:50%;
-   margin-right: 0;
+.input-link:hover{
+    color: rgb(0, 145, 255);
 }
 
-.login-image-container img{
-    height:25%;
-    width:25%;
-}
 
-.login-image-container a{
-   text-decoration: none;
-   color: rgb(157, 222, 255);
-}
 
+
+
+
+/**************************************/
 .input-box{
     padding: 16px 16px;
     margin: 10%;
     border-radius: 22px;
     border: 3px solid rgb(99, 99, 99);
-    z-index: 999;
+    
 }
 
 .input-box:focus{
@@ -85,6 +78,8 @@ body{
     
 }
 
+
+/**************************************/
 .input-button{
     padding:16px 56px;
     border-radius: 26px;
