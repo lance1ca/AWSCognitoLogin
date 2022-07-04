@@ -1,3 +1,26 @@
+
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 600px) {
+  
+
+    .login-form-container{
+        width:80% !important;
+    }
+  }
+
+  @media screen and (max-width: 992px) {
+    .login-form-container{
+        width:50% !important;
+    }
+  }
+
+
+
+
+
+
+
+
 body{
     background-image: url("../images/abstract.jpg");
    
@@ -8,6 +31,11 @@ body{
     background-attachment: fixed;
    
 }
+
+
+
+
+
 
 /**************************************/
 
@@ -25,7 +53,7 @@ body{
 .login-card{
     display: flex;
     justify-content: center;
-    border: 1px solid white;
+    /*border: 1px solid white;*/
     text-align: center;
     border-radius: 26px;
     width:100%;
@@ -44,7 +72,7 @@ body{
     
     text-align: center;
     
-    border:2px solid rgb(0, 165, 36);
+    /*border:2px solid rgb(0, 165, 36);*/
     border-radius: 26px;
  background-color: rgb(181, 201, 219);
  opacity: 1;
@@ -98,10 +126,11 @@ body{
 
 .input-box{
      padding: 16px 16px;
-    margin: 5%; 
+   margin:5%;
     border-radius: 22px;
     border: 3px solid rgb(99, 99, 99);
-    
+    width:50%;
+    height:auto;
     
 }
 
@@ -123,14 +152,18 @@ body{
 
 
 /**************************************/
+
 .input-button{
-    padding:16px 56px;
+    padding:16px 16px;
     border-radius: 26px;
+  
     border: 3px solid rgb(99, 99, 99);
-    margin: 10%;
+    margin: 5%;
     color:grey;
     font-family: 'Dosis';
     font-weight: 300;
+    width:40%;
+    height:auto;
 }
 
 .input-button:hover{
